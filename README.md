@@ -92,3 +92,47 @@ public class EmployeeController {
     }
 }
 ```
+
+We can create various links to the controller and its methods using WebMvcLinkBuilder.slash() method.
+
+```java
+Using /* Link to "/employees" */
+Link link = linkTo(EmployeeController.class).withRel("employees");
+/* Link to "/employees/{id}" */
+Employee e = new Employee(1, "Lokesh", "Gupta", "lokesh@gmail.com");
+Link link = linkTo(EmployeeController.class).slash(e.getId()).withSelfRel();
+```
+
+We can also use create a Method instance and pass it to WebMvcLinkBuilder.methodOn().
+
+```java
+Using Method
+Instance
+Method method = EmployeeController.class.getMethod("getReportByEmployeeById", Integer.class);
+Link link = linkTo(method, 111).withSelfRel();
+//or
+Link link = linkTo(methodOn(EmployeeController.class).getReportByEmployeeById(111)).withSelfRel();
+```
+
+### Adding Link to RepresentationModel
+
+The RepresentationModel provides the overloaded add() methods that can accept either a single Link or a list of Link
+instances.
+
+```java
+Employee employee = ...; //Get an instance from database
+// Self link
+Link selfLink = linkTo(EmployeeController.class)
+        .slash(employee.getId()).
+        withSelfRel();
+// Method link
+Link reportLink = linkTo(methodOn(EmployeeController.class)
+        .getReportByEmployeeById(employee.getId()))
+        .withRel("report");
+employee.
+
+add(selfLink);
+employee.
+
+add(reportLink);
+```
