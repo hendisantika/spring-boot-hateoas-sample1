@@ -2,6 +2,7 @@ package id.my.hendisantika.springboothateoassample1.controller;
 
 import id.my.hendisantika.springboothateoassample1.model.Employee;
 import id.my.hendisantika.springboothateoassample1.model.EmployeeList;
+import id.my.hendisantika.springboothateoassample1.model.EmployeeReportResult;
 import id.my.hendisantika.springboothateoassample1.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.Link;
@@ -60,6 +61,12 @@ public class EmployeeController {
         Employee employee = employeeOpt.get();
         addLinkToEmployee(employee);
         return new ResponseEntity<>(employee, HttpStatus.OK);
+    }
+
+    @GetMapping("/employees/{id}/report")
+    public ResponseEntity<EmployeeReportResult> getReportByEmployeeById(@PathVariable("id") int id) {
+        // Do some operation and return report
+        return null;
     }
 
 }
