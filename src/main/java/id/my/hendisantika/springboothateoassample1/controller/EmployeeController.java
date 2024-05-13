@@ -5,8 +5,13 @@ import id.my.hendisantika.springboothateoassample1.model.EmployeeList;
 import id.my.hendisantika.springboothateoassample1.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.Link;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -42,4 +47,19 @@ public class EmployeeController {
 
         return employeesList;
     }
+
+    @GetMapping("/employees/{id}")
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") int id) {
+
+        Optional<Employee> employeeOpt = employeeRepository.findById(id);
+
+        if (employeeOpt.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        Employee employee = employeeOpt.get();
+        addLinkToEmployee(employee);
+        return new ResponseEntity<>(employee, HttpStatus.OK);
+    }
+
 }
