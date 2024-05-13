@@ -69,4 +69,15 @@ public class EmployeeController {
         return null;
     }
 
+    private void addLinkToEmployee(Employee employee) {
+        // Adding self link employee 'singular' resource
+        Link link = linkTo(EmployeeController.class).slash(employee.getId()).withSelfRel();
+        employee.add(link);
+
+        // Adding method link employee 'singular' resource
+        ResponseEntity<EmployeeReportResult> methodLinkBuilder =
+                methodOn(EmployeeController.class).getReportByEmployeeById(employee.getId());
+        Link reportLink = linkTo(methodLinkBuilder).withRel("employee-report");
+        employee.add(reportLink);
+    }
 }
